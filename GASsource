@@ -1,5 +1,5 @@
 // LINE developersのメッセージ送受信設定に記載のアクセストークン
-var ACCESS_TOKEN = 'PW4Af2FvqVEqgQxKvq/3VkRHYiYCuETGgF2F8TThqRChwUMxXYmYo4+ArolyZ0gbe3KxFzSmON9b9w/tMbzpTPGKi3WOgd3cLasfBeKNgD5pvVk0mBPb8tzCMsC/qoE9+IJJobBEAWcaIPmhtkJYpQdB04t89/1O/w1cDnyilFU=';
+var ACCESS_TOKEN = 'xxxx';
 
 function doPost(e) {
   // WebHookで受信した応答用Token
