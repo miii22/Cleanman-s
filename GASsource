@@ -1,0 +1,75 @@
+// LINE developersのメッセージ送受信設定に記載のアクセストークン
+var ACCESS_TOKEN = 'PW4Af2FvqVEqgQxKvq/3VkRHYiYCuETGgF2F8TThqRChwUMxXYmYo4+ArolyZ0gbe3KxFzSmON9b9w/tMbzpTPGKi3WOgd3cLasfBeKNgD5pvVk0mBPb8tzCMsC/qoE9+IJJobBEAWcaIPmhtkJYpQdB04t89/1O/w1cDnyilFU=';
+
+function doPost(e) {
+  // WebHookで受信した応答用Token
+  var replyToken = JSON.parse(e.postData.contents).events[0].replyToken;
+  // ユーザーのメッセージを取得
+  var userMessage = JSON.parse(e.postData.contents).events[0].message.text;
+  // 応答メッセージ用のAPI URL
+  var url = 'https://api.line.me/v2/bot/message/reply';
+  if(userMessage == "放生会"){
+//  var geo_data = get_geodata(userMessage);
+//  var result = geo_data["result"]; 
+//  var address = geo_data["address"];
+//  var latitude = geo_data["latitude"];
+//  var longitude = geo_data["longitude"];
+
+  UrlFetchApp.fetch(url, {
+    'headers': {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer ' + ACCESS_TOKEN,
+    },
+    'method': 'post',
+    'payload': JSON.stringify({
+      'replyToken': replyToken,
+      'messages': [{
+          "type": "location",
+          "title":userMessage,
+          "address" : "〒812-0053 福岡県福岡市東区箱崎１丁目２２−１",
+          "latitude": "33.615074",
+          "longitude": "130.422374",
+      }],
+    }),
+    });  
+  } else {
+  UrlFetchApp.fetch(url, {
+    'headers': {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer ' + ACCESS_TOKEN,
+    },
+    'method': 'post',
+    'payload': JSON.stringify({
+      'replyToken': replyToken,
+      'messages': [{
+          "type": "text",
+          "text": userMessage + "のゴミ箱情報は、ありません。",
+      }],
+    }),
+    });  
+  }
+  return ContentService.createTextOutput(JSON.stringify({'content': 'post ok'})).setMimeType(ContentService.MimeType.JSON);
+}
+
+function get_geodata(text) {
+  try {
+    var geocode = Maps.newGeocoder()
+      .setLanguage("ja")
+      .geocode(text);
+    var geo = geocode.results[0];
+    var addresstext = geo.formatted_address;
+    var geodata = geo.geometry;
+    var latitude = geodata.location.lat;
+    var longitude = geodata.location.lng;
+    var result = "success";
+  } catch (e) {
+    var result = e.message;
+  }
+  var data = {
+    "address": addresstext,
+    "latitude": latitude,
+    "longitude": longitude,
+    "result": result
+  }
+  return data;
+}
